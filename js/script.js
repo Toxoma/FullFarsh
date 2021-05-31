@@ -1,9 +1,9 @@
 "use strict";
 
-let money = 300; //“Доход за месяц”
+let money = prompt('Ваш месячный доход?');
 let income = 'фриланс';
-let addExpenses = 'интернет, Такси, коммуналка';
-let deposit = true;
+let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'интернет, Такси, коммуналка');
+let deposit = confirm("Есть ли у вас депозит в банке?");
 let mission = 3000;
 let period = 10;
 
@@ -16,9 +16,6 @@ console.log('Цель заработать ' + mission + ' рублей');
 
 addExpenses.toLowerCase().split(', ').forEach(item => console.log(item));
 
-money = prompt('Ваш месячный доход?');
-addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
-deposit = confirm("Есть ли у вас депозит в банке?");
 let expenses1 = prompt('Введите 1ую обязательную статью расходов?');
 let amount1 = prompt('1) Во сколько это обойдется??');
 let expenses2 = prompt('Введите 2ую обязательную статью расходов?');
