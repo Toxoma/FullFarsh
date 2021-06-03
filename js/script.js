@@ -4,6 +4,13 @@ let isNumber = function (n) {
    return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
+let start = function () {
+   do {
+      money = prompt('Ваш месячный доход?');
+   } while (!isNumber(money));
+};
+start();
+
 let money;
 let income = 'фриланс';
 let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'интернет, Такси, коммуналка');
@@ -12,12 +19,7 @@ let expenses = [];
 let mission = 3000;
 let period = 10;
 
-let start = function () {
-   do {
-      money = prompt('Ваш месячный доход?');
-   } while (!isNumber(money));
-};
-start();
+
 
 function getExpensesMonth() {
    let sum = 0;
