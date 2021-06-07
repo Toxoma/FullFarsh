@@ -19,6 +19,8 @@ let appData = {
    expenses: {},
    addExpenses: [],
    deposit: false,
+   percentDeposit: 0,
+   moneyDeposit: 0,
    mission: 3000,
    period: 10,
    budget: money,
@@ -26,15 +28,31 @@ let appData = {
    budgetMonth: 0,
    expensesMonth: 0,
    asking: function () {
+
+      if (confirm('Есть ли у вас доп. заработок?')) {
+         let itemIncome,
+            cashIncome;
+         do {
+            itemIncome = prompt('Какой у вас есть доп. заработок?', 'Таксую');
+         } while (isNumber(itemIncome));
+         do {
+            cashIncome = +prompt('Сколько зарабатываете?', 1000);
+         } while (isNaN(cashIncome));
+         appData.income[itemIncome] = cashIncome;
+      }
+
       let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'интернет, Такси, коммуналка');
 
       appData.addExpenses = addExpenses.toLowerCase().split(', ');
 
       appData.deposit = confirm("Есть ли у вас депозит в банке?");
+      appData.getInfoDeposit();
 
       for (let i = 0; i < 2; i++) {
-         let ask = prompt('Введите обязательную статью расходов?');
-
+         let ask;
+         do {
+            ask = prompt('Введите обязательную статью расходов?');
+         } while (isNumber(ask));
          let a;
          do {
             a = prompt('Во сколько это обойдется?');
@@ -74,7 +92,19 @@ let appData = {
          return 'Что то пошло не так';
       }
    },
-
+   getInfoDeposit: function () {
+      if (appData.deposit) {
+         do {
+            appData.percentDeposit = prompt('Какой годовой процент?', 10);
+         } while (!isNumber(appData.percentDeposit));
+         do {
+            appData.moneyDeposit = prompt('Какая сумма заложена?', 1000);
+         } while (!isNumber(appData.moneyDeposit));
+      }
+   },
+   calcSaveMoney: function () {
+      return appData.budgetMonth * appData.period;
+   }
 };
 
 appData.asking();
@@ -92,3 +122,15 @@ console.log('Наша программа включает в себя данны
 for (let key in appData) {
    console.log(key + " : " + appData[key]);
 }
+
+function vivodAddExpenses() {
+   let sum = [];
+   appData.addExpenses.forEach((item) => {
+      sum.push(item[0].toUpperCase() + item.slice(1));
+   });
+   return sum.join(', ');
+}
+
+console.log(vivodAddExpenses());
+
+// console.dir(appData);
