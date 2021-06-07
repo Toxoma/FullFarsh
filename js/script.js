@@ -134,3 +134,29 @@ function vivodAddExpenses() {
 console.log(vivodAddExpenses());
 
 // console.dir(appData);
+
+let count = document.getElementById('start');
+let btn1 = document.getElementsByTagName('button')[0];
+let btn2 = document.getElementsByTagName('button')[1];
+let checkBox = document.querySelector('#deposit-check');
+let additionalIncomeItems = document.querySelectorAll('.additional_income-item');
+
+let result1 = document.getElementsByClassName('budget_day-value');
+let result2 = document.getElementsByClassName('expenses_month-value');
+let result3 = document.getElementsByClassName('additional_income-value');
+let result4 = document.getElementsByClassName('additional_expenses-value');
+let result5 = document.getElementsByClassName('income_period-value');
+let result6 = document.getElementsByClassName('target_month-value');
+
+let result0 = document.querySelector('.budget_month-value');
+let salaryAmount = document.querySelector('.salary-amount');
+let incomeTitle = document.querySelectorAll('.income-title');
+let incomeAmount = document.querySelectorAll('.income-amount');
+let expensesTitle = document.querySelectorAll('.expenses-title');
+let expensesAmount = document.querySelectorAll('.expenses-amount');
+let additionalExpensesItem = document.querySelectorAll('.additional_expenses-item');
+let targetAmount = document.querySelectorAll('.target-amount');
+let periodSelect = document.querySelectorAll('.period-select');
+
+
+
