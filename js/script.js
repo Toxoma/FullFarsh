@@ -24,7 +24,10 @@ let start = document.getElementById('start'),
    expensesItems = document.querySelectorAll('.expenses-items'),
    targetAmount = document.querySelector('.target-amount'),
    periodSelect = document.querySelector('.period-select'),
-   periodAmount = document.querySelector('.period-amount');
+   periodAmount = document.querySelector('.period-amount'),
+   placeholderNames = document.querySelectorAll('input[placeholder="Наименование"]'),
+   placeholderSumma = document.querySelectorAll('input[placeholder="Сумма"]');
+
 
 let appData = {
    income: {},
@@ -65,6 +68,9 @@ let appData = {
    },
    addExpensesBlock: function () {
       let cloneExpensesItem = expensesItems[0].cloneNode(true);
+
+      appData.newInputs(cloneExpensesItem.querySelectorAll('*'));
+
       expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesPlus);
       expensesItems = document.querySelectorAll('.expenses-items');
 
@@ -74,12 +80,21 @@ let appData = {
    },
    addIncomeBlock: function () {
       let cloneIncomeItem = incomeItems[0].cloneNode(true);
+
+      appData.newInputs(cloneIncomeItem.querySelectorAll('*'));
+
       incomeItems[0].parentNode.insertBefore(cloneIncomeItem, incomePlus);
+
       incomeItems = document.querySelectorAll('.income-items');
 
       if (incomeItems.length === 3) {
          incomePlus.style.display = 'none';
       }
+   },
+   newInputs: function (items) {
+      items.forEach(item => {
+         item.value = '';
+      });
    },
    getAddExpenses: function () {
       let addExpenses = additionalExpensesItem.value.split(',');
@@ -168,6 +183,22 @@ incomePlus.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('input', () => {
    periodAmount.textContent = periodSelect.value;
 });
+
+placeholderNames.forEach(item => {
+   item.addEventListener('input', () => {
+      if (/[A-Z]|[a-z]|[0-9]/.test(item.value)) {
+         item.value = item.value.substring(0, (item.value.length - 1));
+      }
+   });
+});
+placeholderSumma.forEach(item => {
+   item.addEventListener('input', () => {
+      if (/[^0-9]/.test(item.value)) {
+         item.value = item.value.substring(0, (item.value.length - 1));
+      }
+   });
+});
+
 
 // console.log(appData.getTargetMonth());
 // console.log('budgetDay: ', appData.budgetDay);
