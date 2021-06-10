@@ -77,6 +77,8 @@ let appData = {
       if (expensesItems.length === 3) {
          expensesPlus.style.display = 'none';
       }
+      appData.rusWordNames();
+      appData.rusWordSumma();
    },
    addIncomeBlock: function () {
       let cloneIncomeItem = incomeItems[0].cloneNode(true);
@@ -90,6 +92,8 @@ let appData = {
       if (incomeItems.length === 3) {
          incomePlus.style.display = 'none';
       }
+      appData.rusWordNames();
+      appData.rusWordSumma();
    },
    newInputs: function (items) {
       items.forEach(item => {
@@ -165,6 +169,26 @@ let appData = {
    },
    calcPeriod: function (period) {
       return appData.budgetMonth * period;
+   },
+   rusWordNames: function () {
+      placeholderNames = document.querySelectorAll('input[placeholder="Наименование"]');
+      placeholderNames.forEach(item => {
+         item.addEventListener('input', () => {
+            if (/[A-Z]|[a-z]|[0-9]/.test(item.value)) {
+               item.value = item.value.substring(0, (item.value.length - 1));
+            }
+         });
+      });
+   },
+   rusWordSumma: function () {
+      placeholderSumma = document.querySelectorAll('input[placeholder="Сумма"]');
+      placeholderSumma.forEach(item => {
+         item.addEventListener('input', () => {
+            if (/[^0-9]/.test(item.value)) {
+               item.value = item.value.substring(0, (item.value.length - 1));
+            }
+         });
+      });
    }
 };
 
@@ -183,21 +207,10 @@ incomePlus.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('input', () => {
    periodAmount.textContent = periodSelect.value;
 });
+appData.rusWordNames();
+appData.rusWordSumma();
 
-placeholderNames.forEach(item => {
-   item.addEventListener('input', () => {
-      if (/[A-Z]|[a-z]|[0-9]/.test(item.value)) {
-         item.value = item.value.substring(0, (item.value.length - 1));
-      }
-   });
-});
-placeholderSumma.forEach(item => {
-   item.addEventListener('input', () => {
-      if (/[^0-9]/.test(item.value)) {
-         item.value = item.value.substring(0, (item.value.length - 1));
-      }
-   });
-});
+
 
 
 // console.log(appData.getTargetMonth());
