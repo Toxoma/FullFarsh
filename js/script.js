@@ -69,7 +69,7 @@ let appData = {
    },
    addExpensesBlock: function () {
       let cloneExpensesItem = expensesItems[0].cloneNode(true);
-      appData.newInputs(cloneExpensesItem.querySelectorAll('*'));
+      this.newInputs(cloneExpensesItem.querySelectorAll('*'));
 
       expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesPlus);
       expensesItems = document.querySelectorAll('.expenses-items');
@@ -77,13 +77,12 @@ let appData = {
       if (expensesItems.length === 3) {
          expensesPlus.style.display = 'none';
       }
-      appData.rusWordNames();
-      appData.rusWordSumma();
+      this.rusWordNames();
+      this.rusWordSumma();
    },
    addIncomeBlock: function () {
       let cloneIncomeItem = incomeItems[0].cloneNode(true);
-
-      appData.newInputs(cloneIncomeItem.querySelectorAll('*'));
+      this.newInputs(cloneIncomeItem.querySelectorAll('*'));
 
       incomeItems[0].parentNode.insertBefore(cloneIncomeItem, incomePlus);
 
@@ -92,8 +91,9 @@ let appData = {
       if (incomeItems.length === 3) {
          incomePlus.style.display = 'none';
       }
-      appData.rusWordNames();
-      appData.rusWordSumma();
+      this.rusWordNames();
+      this.rusWordSumma();
+
    },
    newInputs: function (items) {
       items.forEach(item => {
@@ -246,8 +246,12 @@ start.addEventListener('click', () => {
    }
 });
 
-expensesPlus.addEventListener('click', appData.addExpensesBlock);
-incomePlus.addEventListener('click', appData.addIncomeBlock);
+expensesPlus.addEventListener('click', () => {
+   appData.addExpensesBlock.call(appData);
+});
+incomePlus.addEventListener('click', () => {
+   appData.addIncomeBlock.call(appData);
+});
 
 periodSelect.addEventListener('input', () => {
    periodAmount.textContent = periodSelect.value;
