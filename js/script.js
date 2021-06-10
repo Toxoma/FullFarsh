@@ -69,7 +69,6 @@ let appData = {
    },
    addExpensesBlock: function () {
       let cloneExpensesItem = expensesItems[0].cloneNode(true);
-
       appData.newInputs(cloneExpensesItem.querySelectorAll('*'));
 
       expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesPlus);
@@ -126,7 +125,8 @@ let appData = {
             addIncome += ', ' + item.value.trim();
          }
       });
-      appData.addIncome.push(addIncome);
+
+      this.addIncome.push(addIncome);
    },
    getExpenses: function () {
       expensesItems.forEach(item => {
@@ -146,12 +146,12 @@ let appData = {
          }
       });
 
-      for (let key in appData.income) {
+      for (let key in this.income) {
          this.incomeMonth += +this.income[key];
       }
    },
    getExpensesMonth: function () {
-      for (let key in appData.expenses) {
+      for (let key in this.expenses) {
          this.expensesMonth += +this.expenses[key];
       }
    },
@@ -160,7 +160,7 @@ let appData = {
       this.budgetDay = Math.floor(this.budgetMonth / 30);
    },
    getTargetMonth: function () {
-      return Math.ceil(targetAmount.value / appData.budgetMonth);
+      return Math.ceil(targetAmount.value / this.budgetMonth);
    },
    calcPeriod: function (period) {
       return this.budgetMonth * period;
