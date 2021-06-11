@@ -228,41 +228,40 @@ let appData = {
    }
 };
 
-start.addEventListener('click', () => {
-   if (salaryAmount.value !== '') {
-      appData.start();
-      let block = document.querySelector('.data'),
-         blockItems = block.querySelectorAll('input[type=text] ');
+function Events() { }
 
-      blockItems.forEach(item => {
-         item.setAttribute("disabled", "disabled");
-      });
+Events.prototype.eventsListeners = function () {
+   start.addEventListener('click', () => {
+      if (salaryAmount.value !== '') {
+         appData.start();
+         let block = document.querySelector('.data'),
+            blockItems = block.querySelectorAll('input[type=text] ');
 
-      start.style.display = 'none';
-      cancel.style.display = 'block';
-      cancel.addEventListener('click', () => {
-         appData.reset();
-      });
-   }
-});
+         blockItems.forEach(item => {
+            item.setAttribute("disabled", "disabled");
+         });
 
-expensesPlus.addEventListener('click', () => {
-   appData.addExpensesBlock.call(appData);
-});
-incomePlus.addEventListener('click', () => {
-   appData.addIncomeBlock.call(appData);
-});
+         start.style.display = 'none';
+         cancel.style.display = 'block';
+         cancel.addEventListener('click', () => {
+            appData.reset();
+         });
+      }
+   });
 
-periodSelect.addEventListener('input', () => {
-   periodAmount.textContent = periodSelect.value;
-});
+   expensesPlus.addEventListener('click', () => {
+      appData.addExpensesBlock.call(appData);
+   });
+   incomePlus.addEventListener('click', () => {
+      appData.addIncomeBlock.call(appData);
+   });
+
+   periodSelect.addEventListener('input', () => {
+      periodAmount.textContent = periodSelect.value;
+   });
+};
+
+(new Events()).eventsListeners();
 
 appData.rusWordNames();
 appData.rusWordSumma();
-
-
-
-
-
-
-
