@@ -228,9 +228,6 @@ let appData = {
    }
 };
 
-Event.prototype.eventsListeners = function () {
-
-};
 
 let mainObj = Object.create(appData);
 
