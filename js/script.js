@@ -228,12 +228,16 @@ let appData = {
    }
 };
 
-function Events() { }
+Event.prototype.eventsListeners = function () {
 
-Events.prototype.eventsListeners = function () {
+};
+
+let mainObj = Object.create(appData);
+
+mainObj.eventsListeners = () => {
    start.addEventListener('click', () => {
       if (salaryAmount.value !== '') {
-         appData.start();
+         mainObj.start();
          let block = document.querySelector('.data'),
             blockItems = block.querySelectorAll('input[type=text] ');
 
@@ -244,16 +248,16 @@ Events.prototype.eventsListeners = function () {
          start.style.display = 'none';
          cancel.style.display = 'block';
          cancel.addEventListener('click', () => {
-            appData.reset();
+            mainObj.reset();
          });
       }
    });
 
    expensesPlus.addEventListener('click', () => {
-      appData.addExpensesBlock.call(appData);
+      mainObj.addExpensesBlock();
    });
    incomePlus.addEventListener('click', () => {
-      appData.addIncomeBlock.call(appData);
+      mainObj.addIncomeBlock();
    });
 
    periodSelect.addEventListener('input', () => {
@@ -261,7 +265,6 @@ Events.prototype.eventsListeners = function () {
    });
 };
 
-(new Events()).eventsListeners();
-
-appData.rusWordNames();
-appData.rusWordSumma();
+mainObj.eventsListeners();
+mainObj.rusWordNames();
+mainObj.rusWordSumma();
