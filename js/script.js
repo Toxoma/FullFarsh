@@ -56,9 +56,6 @@ AppData.prototype.start = function () {
 
    this.getAddExpInc();
 
-   // this.getAddExpenses();
-   // this.getAddIncome();
-
    this.getBudget();
    this.showResult();
 };
@@ -96,38 +93,6 @@ AppData.prototype.newInputs = function (items) {
    items.forEach(item => {
       item.value = '';
    });
-};
-
-AppData.prototype.getAddExpenses = function () {
-   const addExpenses = additionalExpensesItem.value.split(',');
-
-   addExpenses.forEach(item => {
-      item = item.trim();
-      if (item !== '') {
-         this.addExpenses.push(item);
-      }
-   });
-
-};
-
-AppData.prototype.getAddIncome = function () {
-   let addIncome = '',
-      count = true;
-
-   additionalIncomeItems.forEach(item => {
-      if (item.value.trim() === '') {
-         return;
-      }
-
-      if (count) {
-         count = false;
-         addIncome += item.value.trim();
-      } else {
-         addIncome += ', ' + item.value.trim();
-      }
-   });
-
-   this.addIncome.push(addIncome);
 };
 
 AppData.prototype.getAddExpInc = function () {
