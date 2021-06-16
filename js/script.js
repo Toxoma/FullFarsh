@@ -123,8 +123,8 @@ class AppData {
          count(item.value, true);
       });
 
-      const ExpensesStr = additionalExpensesItem.value.split(',');
-      ExpensesStr.forEach(item => count(item, false));
+      const expensesStr = additionalExpensesItem.value.split(',');
+      expensesStr.forEach(item => count(item, false));
    }
 
 
