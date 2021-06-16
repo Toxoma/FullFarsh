@@ -16,6 +16,48 @@ function setCookie(key, value, minutes = 5) {
    document.cookie = cookieStr;
 }
 
+function resetStorage() {
+   localStorage.clear();
+   document.cookie.split(';').some(item => {
+      const name = item.trim().split('=')[0];
+      document.cookie = name + '=; Max-Age=-99999999;';
+   });
+}
+
+function compareCookies() {
+   const masCookie = [];
+
+   document.cookie.split(';').forEach(item => {
+      item = item.trim().split('=');
+      const value = item.pop();
+      const name = item.pop();
+      const str = { name: name, value: value };
+      masCookie.push(str);
+   });
+
+   if (!masCookie.some(item => item.name === "isLoad" && item.value === 'true')) {
+      return false;
+   } else {
+      masCookie.shift();
+   }
+
+
+   for (const key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+         let localValue;
+
+         if (localStorage.getItem(key) !== null) {
+            localValue = localStorage.getItem(key).split('"')[1];
+         }
+
+         if (!masCookie.some(item => key === item.name && localValue === item.value)) {
+            return false;
+         }
+      }
+   }
+   return true;
+}
+
 const start = document.getElementById('start'),
    cancel = document.getElementById('cancel'),
    incomePlus = document.getElementsByTagName('button')[0],
@@ -68,6 +110,7 @@ class AppData {
       this.getAddExpInc();
       this.getInfoDeposit();
       this.getBudget();
+      setCookie('isLoad', true);
       this.showResult();
    }
 
@@ -88,24 +131,22 @@ class AppData {
                   this.expensesMonth = +str;
                   break;
                case 'additional_income-value':
-                  this.addIncome = str;
+                  this.addIncome = str.split(', ');
                   break;
-
                case 'income_period-value':
                   incomePeriodValue.value = +str;
                   break;
-
                case 'budget_day-value':
                   this.budgetDay = +str;
                   break;
                case 'additional_expenses-value':
-                  this.addExpenses = str;
+                  this.addExpenses = str.split(', ');
                   break;
-
                case 'target_month-value':
                   setTimeout(() => {
                      targetMonthValue.value = str;
-                  }, 500);
+                     appData.showResult();
+                  }, 300);
                   break;
             }
          }
@@ -121,20 +162,20 @@ class AppData {
       } else {
          additionalExpensesValue.value = this.addExpenses.join(', ');
       }
-      additionalIncomeValue.value = this.addIncome;
-      targetMonthValue.value = this.getTargetMonth();
+      additionalIncomeValue.value = this.addIncome.join(', ');
+
+      if (salaryAmount.value !== '') {
+         targetMonthValue.value = this.getTargetMonth();
+      }
+
       incomePeriodValue.value = this.calcPeriod(periodSelect.value);
 
-      if (salaryAmount.value) {
-         const result = document.querySelectorAll('.result-total');
-         result.forEach(item => {
-            const name = item.className.split(' ')[1];
-            this.saveLocal(name, item.value);
-            setCookie(name, item.value);
-         });
-
-         setCookie('isLoad', true);
-      }
+      const result = document.querySelectorAll('.result-total');
+      result.forEach(item => {
+         const name = item.className.split(' ')[1];
+         this.saveLocal(name, item.value);
+         setCookie(name, item.value);
+      });
    }
 
    addBlockExpInc(target, items, btn) {
@@ -159,18 +200,19 @@ class AppData {
    }
 
    getAddExpInc() {
-
       const count = (item, income) => {
          item = item.trim();
+
          if (item !== '') {
-            console.log(item);
+
             if (income) {
                this.addIncome.push(item);
+
             } else {
                let addIncome = '',
-                  count = true;
-               if (count) {
-                  count = false;
+                  flag = true;
+               if (flag) {
+                  flag = false;
                   addIncome += item;
                } else {
                   addIncome += ', ' + item;
@@ -296,7 +338,7 @@ class AppData {
 
       start.style.display = 'block';
       cancel.style.display = 'none';
-      localStorage.clear();
+      resetStorage();
    }
 
    getInfoDeposit() {
@@ -400,9 +442,10 @@ appData.rusWordSumma();
 
 
 document.addEventListener('DOMContentLoaded', () => {
-   if (localStorage.length > 0) {
+   if (localStorage.length > 0 && compareCookies()) {
       appData.blockItems();
       appData.unLoadLocal();
-      appData.showResult();
+   } else {
+      resetStorage();
    }
 });
